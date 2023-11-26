@@ -73,75 +73,64 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Flow Lyrix'),
-        ),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: Container(
-                      color: Colors.brown,
-                      child: StreamBuilder<PlayerState>(
-                          stream: songProvider.player.playerStateStream,
-                          builder: (context, snapshot) {
-                            final playerState = snapshot.data;
-                            final playing = playerState?.playing ?? false;
-                            print('Player state: ${playerState.toString()}');
-                            print('Playing: $playing');
-                            return songProvider.christianLyrics
-                                .getLyric(context, isPlaying: playing);
-                          }))),
+      appBar: AppBar(
+        title: const Text('Flow Lyrix'),
+      ),
+      body: SafeArea(
+        child: StreamBuilder<String?>(
+            stream: songProvider.lyricsStream,
+            builder: (context, snapshot) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Container(
+                          color: Colors.brown,
+                          child: StreamBuilder<PlayerState>(
+                              stream: songProvider.player.playerStateStream,
+                              builder: (context, snapshot) {
+                                final playerState = snapshot.data;
+                                final playing = playerState?.playing ?? false;
+                                return songProvider.christianLyrics
+                                    .getLyric(context, isPlaying: playing);
+                              }))),
 
-              // Display play/pause button and volume/speed sliders.
-              ControlButtons(songProvider.player, songProvider.christianLyrics),
-              // Display seek bar. Using StreamBuilder, this widget rebuilds
-              // each time the position, buffered position or duration changes.
-              StreamBuilder<PositionData>(
-                  stream: songProvider.positionDataStream,
-                  builder: (context, snapshot) {
-                    final positionData = snapshot.data;
+                  // Display play/pause button and volume/speed sliders.
+                  ControlButtons(
+                      songProvider.player, songProvider.christianLyrics),
+                  // Display seek bar. Using StreamBuilder, this widget rebuilds
+                  // each time the position, buffered position or duration changes.
+                  StreamBuilder<PositionData>(
+                      stream: songProvider.positionDataStream,
+                      builder: (context, snapshot) {
+                        final positionData = snapshot.data;
 
-                    if (positionData != null) {
-                      print(
-                          'Position data: ${positionData.duration.inMilliseconds}, ${positionData.position.inMilliseconds}');
-                      songProvider.christianLyrics.setPositionWithOffset(
-                          position: positionData.position.inMilliseconds,
-                          duration: positionData.duration.inMilliseconds);
-                    }
+                        if (positionData != null) {
+                          songProvider.christianLyrics.setPositionWithOffset(
+                              position: positionData.position.inMilliseconds,
+                              duration: positionData.duration.inMilliseconds);
+                        }
 
-                    return SeekBar(
-                      duration: positionData?.duration ?? Duration.zero,
-                      position: positionData?.position ?? Duration.zero,
-                      bufferedPosition:
-                          positionData?.bufferedPosition ?? Duration.zero,
-                      onChangeEnd: (Duration d) {
-                        songProvider.christianLyrics.resetLyric();
-                        songProvider.christianLyrics.setPositionWithOffset(
-                            position: d.inMilliseconds,
-                            duration: positionData!.duration.inMilliseconds);
-                        songProvider.player.seek(d);
-                      },
-                    );
-                  }),
-            ],
-          ),
-        )
-        // lines.isEmpty
-        //     ? Center(
-        //         child: Text(text),
-        //       )
-        //     : ListView.builder(
-        //         itemCount: lines.length,
-        //         itemBuilder: (context, index) {
-        //           String lineText = lines[index];
-        //           return ListTile(
-        //             title: Text(lineText),
-        //           );
-        //         },
-        //       ),
-        );
+                        return SeekBar(
+                          duration: positionData?.duration ?? Duration.zero,
+                          position: positionData?.position ?? Duration.zero,
+                          bufferedPosition:
+                              positionData?.bufferedPosition ?? Duration.zero,
+                          onChangeEnd: (Duration d) {
+                            songProvider.christianLyrics.resetLyric();
+                            songProvider.christianLyrics.setPositionWithOffset(
+                                position: d.inMilliseconds,
+                                duration:
+                                    positionData!.duration.inMilliseconds);
+                            songProvider.player.seek(d);
+                          },
+                        );
+                      }),
+                ],
+              );
+            }),
+      ),
+    );
   }
 }

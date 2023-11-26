@@ -31,13 +31,15 @@ class SongProvider {
           SyltLyricsData syltLyricsData =
               SyltLyricsFromMp3Parser.parseMp3BytesToSyltLyricsData(mp3Bytes);
 
-          lyrics = syltLyricsData.toSrt();
-          print(lyrics);
-          for (String line in lyrics!.split('\r\n')) {
+          String newLyrics = syltLyricsData.toSrt();
+          print(newLyrics);
+          for (String line in newLyrics.split('\r\n')) {
             print(line);
           }
           // TODO: check for nullsafety
-          christianLyrics.setLyricContent(lyrics!);
+          christianLyrics.setLyricContent(newLyrics);
+
+          lyrics = newLyrics;
         });
       } on UnsupportedError catch (e) {
         debugPrint(e.message);

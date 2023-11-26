@@ -1,7 +1,7 @@
 name: flow_lyrix
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.2.0
+version: 0.3.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -24,7 +24,10 @@ dependencies:
   sylt_parser:
     git:
       url: https://github.com/Movinghead333/sylt_parser.git
-      ref: 0260efb82cd69305c0f8a0e8039bce336c611576
+      ref: 20fdd555dbce83241f4bb0c81049ac93db79f49e
+
+  # sylt_parser:
+  #   path: C:/Dev/dart_projects/sylt_parser
 
   uri_to_file: ^1.0.0
 
