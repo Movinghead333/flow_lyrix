@@ -8,7 +8,7 @@ void main() {
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp();
+  const MainApp({Key? key}) : super(key: key);
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -19,7 +19,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return Provider<SongProvider>(
       create: (context) => SongProvider(),
-      child: MaterialApp(
+      child: const MaterialApp(
         home: ShowLyricsScreen(),
       ),
     );

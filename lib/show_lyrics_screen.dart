@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class ShowLyricsScreen extends StatefulWidget {
-  const ShowLyricsScreen();
+  const ShowLyricsScreen({Key? key}) : super(key: key);
 
   @override
   State<ShowLyricsScreen> createState() => _ShowLyricsScreenState();
@@ -85,16 +85,21 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                      child: Container(
-                          color: Colors.brown,
-                          child: StreamBuilder<PlayerState>(
-                              stream: songProvider.player.playerStateStream,
-                              builder: (context, snapshot) {
-                                final playerState = snapshot.data;
-                                final playing = playerState?.playing ?? false;
-                                return songProvider.christianLyrics
-                                    .getLyric(context, isPlaying: playing);
-                              }))),
+                    child: Container(
+                      color: const Color.fromARGB(255, 23, 22, 50),
+                      child: StreamBuilder<PlayerState>(
+                        stream: songProvider.player.playerStateStream,
+                        builder: (context, snapshot) {
+                          final playerState = snapshot.data;
+                          final playing = playerState?.playing ?? false;
+                          return songProvider.christianLyrics.getLyric(context,
+                              isPlaying: playing,
+                              textColor:
+                                  const Color.fromARGB(255, 255, 222, 59));
+                        },
+                      ),
+                    ),
+                  ),
 
                   // Display play/pause button and volume/speed sliders.
                   ControlButtons(

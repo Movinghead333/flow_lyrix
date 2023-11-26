@@ -13,7 +13,7 @@ class SongProvider {
   SongProvider() {
     player.playbackEventStream.listen((event) {},
         onError: (Object e, StackTrace stackTrace) {
-      print('A stream error occurred: $e');
+      debugPrint('A stream error occurred: $e');
     });
 
     mp3FilepathStream.listen((newMp3Filepath) async {
@@ -32,10 +32,7 @@ class SongProvider {
               SyltLyricsFromMp3Parser.parseMp3BytesToSyltLyricsData(mp3Bytes);
 
           String newLyrics = syltLyricsData.toSrt();
-          print(newLyrics);
-          for (String line in newLyrics.split('\r\n')) {
-            print(line);
-          }
+
           // TODO: check for nullsafety
           christianLyrics.setLyricContent(newLyrics);
 
@@ -86,7 +83,7 @@ class SongProvider {
 
   Future<Duration?> _loadSongIntoPlayer(String mp3Filepath) async {
     final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration.speech());
+    await session.configure(const AudioSessionConfiguration.speech());
     return player.setAudioSource(AudioSource.uri(Uri.parse(mp3Filepath)));
   }
 }
