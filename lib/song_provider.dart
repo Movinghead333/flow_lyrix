@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:christian_lyrics/christian_lyrics.dart';
 import 'package:flow_lyrix/christian_lyrics_widgets.dart';
-import 'package:flow_lyrix/lyrics_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sylt_parser/sylt_parser.dart';
 import 'package:uri_to_file/uri_to_file.dart';
 
 class SongProvider {
@@ -28,10 +28,14 @@ class SongProvider {
           List<int> mp3Bytes = file.readAsBytesSync();
           debugPrint('length: ${mp3Bytes.length}');
 
-          List<String> miniLyricsLyrics =
-              LyricsUtil.getMiniLyricsGeneratedLyricsFromMp3Bytes(mp3Bytes);
+          SyltLyricsData syltLyricsData =
+              SyltLyricsFromMp3Parser.parseMp3BytesToSyltLyricsData(mp3Bytes);
 
-          lyrics = LyricsUtil.syltLyricsToSrtLyrics(miniLyricsLyrics);
+          lyrics = syltLyricsData.toSrt();
+          print(lyrics);
+          for (String line in lyrics!.split('\r\n')) {
+            print(line);
+          }
           // TODO: check for nullsafety
           christianLyrics.setLyricContent(lyrics!);
         });

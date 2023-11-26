@@ -399,6 +399,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  sylt_parser:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "0260efb82cd69305c0f8a0e8039bce336c611576"
+      resolved-ref: "0260efb82cd69305c0f8a0e8039bce336c611576"
+      url: "https://github.com/Movinghead333/sylt_parser.git"
+    source: git
+    version: "0.1.0"
   synchronized:
     dependency: transitive
     description:
@@ -480,5 +489,5 @@ packages:
     source: hosted
     version: "1.0.3"
 sdks:
-  dart: ">=3.1.0 <4.0.0"
+  dart: ">=3.1.4 <4.0.0"
   flutter: ">=3.7.0"
