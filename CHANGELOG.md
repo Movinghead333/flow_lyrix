@@ -1,3 +1,7 @@
+## 0.8.0
+
+- Split text color into default and hightlight text color, which can be edited in the app settings.
+
 ## 0.7.0
 
 - Corrected `AndroidManifest.xml` so only `.mp3`-files can be opened with the `Flow Lyrix` app.

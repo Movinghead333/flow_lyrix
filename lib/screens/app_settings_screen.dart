@@ -17,7 +17,10 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
   Color _newBackgroundColor = Colors.black;
 
   /// Used within the color picker dialog
-  Color _newTextColor = Colors.lightBlue;
+  Color _newTextDefaultColor = Colors.grey;
+
+  /// Used within the color picker dialog
+  Color _newTextHighlightColor = Colors.lightBlue;
 
   static const TextStyle uiTextStyle = TextStyle(fontSize: 24);
 
@@ -139,12 +142,12 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Choose a new text color:'),
+                          title: const Text('Choose a new default text color:'),
                           content: SingleChildScrollView(
                             child: ColorPicker(
-                              pickerColor: appSettings.textColor,
+                              pickerColor: appSettings.textDefaultColor,
                               onColorChanged: (Color newColor) {
-                                _newTextColor = newColor;
+                                _newTextDefaultColor = newColor;
                               },
                             ),
                           ),
@@ -152,8 +155,9 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                             ElevatedButton(
                               child: const Text('Save'),
                               onPressed: () {
-                                _appSettingsProvider.appSettings = appSettings
-                                    .copyWith(textColor: _newTextColor);
+                                _appSettingsProvider.appSettings =
+                                    appSettings.copyWith(
+                                        textDefaultColor: _newTextDefaultColor);
                                 _appSettingsProvider.saveAppSettings();
                                 Navigator.of(context).pop();
                               },
@@ -162,18 +166,61 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                         ),
                       );
                     },
-                    child: const Text('Change text color'),
+                    child: const Text('Change default text color'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title:
+                              const Text('Choose a new highlight text color:'),
+                          content: SingleChildScrollView(
+                            child: ColorPicker(
+                              pickerColor: appSettings.textHighlightColor,
+                              onColorChanged: (Color newColor) {
+                                _newTextHighlightColor = newColor;
+                              },
+                            ),
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: const Text('Save'),
+                              onPressed: () {
+                                _appSettingsProvider.appSettings =
+                                    appSettings.copyWith(
+                                        textHighlightColor:
+                                            _newTextHighlightColor);
+                                _appSettingsProvider.saveAppSettings();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Text('Change highlight text color'),
                   ),
                   const Divider(thickness: 2),
                   const Text('Preview:', style: uiTextStyle),
                   Container(
                     padding: const EdgeInsets.all(10),
                     color: appSettings.backgroundColor,
-                    child: Text(
-                      'Text color on background',
-                      style: TextStyle(
-                          color: appSettings.textColor,
-                          fontSize: appSettings.fontSize),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Text default color on background',
+                          style: TextStyle(
+                              color: appSettings.textDefaultColor,
+                              fontSize: appSettings.fontSize),
+                        ),
+                        Text(
+                          'Text highlight color on background',
+                          style: TextStyle(
+                              color: appSettings.textHighlightColor,
+                              fontSize: appSettings.fontSize),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -29,7 +29,8 @@ class AppSettingsProvider {
 
     // If we never stored app settings we just use the default settings and do
     // not load anything here.
-    if (appSettingsJsonText != null) {
+    if (appSettingsJsonText != null &&
+        appSettingsJsonText.contains('textDefaultColor')) {
       Map<String, dynamic> appSettingsJson = jsonDecode(appSettingsJsonText);
       appSettings = AppSettings.fromJson(appSettingsJson);
     }

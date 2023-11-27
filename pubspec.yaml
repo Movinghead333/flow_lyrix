@@ -1,7 +1,7 @@
 name: flow_lyrix
 description: An app for loading mp3 files and display the lyrics within those mp3 files based on timestamps.
 publish_to: 'none'
-version: 0.7.0
+version: 0.8.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
   christian_lyrics:
     git:
       url: https://github.com/Movinghead333/christian_lyrics.git
-      ref: 2857b3c8a9493ede28df665ed2b8ad22b59ab03f
+      ref: af5c80f4069d6d7c040249979876e4d55beee96b
   # christian_lyrics:
   #   path: C:/Dev/flutter_projects/forks/christian_lyrics
   
