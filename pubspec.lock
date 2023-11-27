@@ -61,11 +61,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "57e4caccc570e9980d82c45a4309180523b3ca6c"
-      resolved-ref: "57e4caccc570e9980d82c45a4309180523b3ca6c"
+      ref: "2857b3c8a9493ede28df665ed2b8ad22b59ab03f"
+      resolved-ref: "2857b3c8a9493ede28df665ed2b8ad22b59ab03f"
       url: "https://github.com/Movinghead333/christian_lyrics.git"
     source: git
-    version: "0.1.0"
+    version: "0.2.0"
   clock:
     dependency: transitive
     description:
@@ -135,6 +135,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  flutter_colorpicker:
+    dependency: "direct main"
+    description:
+      name: flutter_colorpicker
+      sha256: "458a6ed8ea480eb16ff892aedb4b7092b2804affd7e046591fb03127e8d8ef8b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -153,6 +161,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  get:
+    dependency: transitive
+    description:
+      name: get
+      sha256: e4e7335ede17452b391ed3b2ede016545706c01a02292a6c97619705e7d2a85e
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.6"
+  get_storage:
+    dependency: "direct main"
+    description:
+      name: get_storage
+      sha256: "39db1fffe779d0c22b3a744376e86febe4ade43bf65e06eab5af707dc84185a2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   http:
     dependency: transitive
     description:
@@ -490,4 +514,4 @@ packages:
     version: "1.0.3"
 sdks:
   dart: ">=3.1.4 <4.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.13.0"

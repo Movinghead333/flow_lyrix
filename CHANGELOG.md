@@ -1,3 +1,10 @@
+## 0.5.0
+
+- Added app settings where the user can set the fontSize for the lyrics text, the background color of the lyrics panel as well as the text color of the lyrics text itself.
+- The updates live in case any settings change.
+- The app settings are also persisted on disk.
+- Added folder struture to better manage the `.dart` files since the codebase is growing.
+
 ## 0.4.0
 
 - Changed text and background coloring

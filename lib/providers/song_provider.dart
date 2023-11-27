@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:christian_lyrics/christian_lyrics.dart';
-import 'package:flow_lyrix/christian_lyrics_widgets.dart';
+import 'package:flow_lyrix/widgets/christian_lyrics_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
