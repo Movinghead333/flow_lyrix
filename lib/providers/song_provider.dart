@@ -4,6 +4,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:christian_lyrics/christian_lyrics.dart';
 import 'package:flow_lyrix/widgets/christian_lyrics_widgets.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sylt_parser/sylt_parser.dart';
@@ -11,8 +12,11 @@ import 'package:uri_to_file/uri_to_file.dart';
 
 class SongProvider {
   SongProvider() {
-    player.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace stackTrace) {
+    player.playbackEventStream.listen((PlaybackEvent event) {
+      if (event.processingState == ProcessingState.completed) {
+        SystemNavigator.pop();
+      }
+    }, onError: (Object e, StackTrace stackTrace) {
       debugPrint('A stream error occurred: $e');
     });
 
@@ -37,6 +41,8 @@ class SongProvider {
           christianLyrics.setLyricContent(newLyrics);
 
           lyrics = newLyrics;
+
+          player.play();
         });
       } on UnsupportedError catch (e) {
         debugPrint(e.message);

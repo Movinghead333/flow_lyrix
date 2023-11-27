@@ -1,3 +1,8 @@
+## 0.6.0
+
+- Songs are now automatically started when the app is opened from an intent.
+- When a song finishes, the app automatically closes (into background).
+
 ## 0.5.0
 
 - Added app settings where the user can set the fontSize for the lyrics text, the background color of the lyrics panel as well as the text color of the lyrics text itself.
