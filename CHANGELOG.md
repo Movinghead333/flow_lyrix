@@ -1,3 +1,7 @@
+## 0.7.0
+
+- Corrected `AndroidManifest.xml` so only `.mp3`-files can be opened with the `Flow Lyrix` app.
+
 ## 0.6.0
 
 - Songs are now automatically started when the app is opened from an intent.
