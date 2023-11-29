@@ -2,6 +2,7 @@ import 'package:flow_lyrix/providers/app_settings_provider.dart';
 import 'package:flow_lyrix/screens/app_settings_screen.dart';
 import 'package:flow_lyrix/screens/show_lyrics_screen.dart';
 import 'package:flow_lyrix/providers/song_provider.dart';
+import 'package:flow_lyrix/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,8 @@ class _MainAppState extends State<MainApp> {
         Provider<AppSettingsProvider>(create: (_) => AppSettingsProvider()),
       ],
       child: MaterialApp(
+        theme: darkTheme,
+        darkTheme: darkTheme,
         initialRoute: ShowLyricsScreen.routeName,
         routes: {
           ShowLyricsScreen.routeName: (context) => const ShowLyricsScreen(),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
+
 class AppSettingsScreen extends StatefulWidget {
   const AppSettingsScreen({Key? key}) : super(key: key);
   static const String routeName = '/app_settings';
@@ -37,11 +39,13 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: uiTextStyle,
-        ),
-      ),
+          title: const Text(
+            'Settings',
+            style: uiTextStyle,
+          ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.onBackground,
+          )),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: StreamBuilder<AppSettings>(
@@ -68,6 +72,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                     'Font size:',
                     style: uiTextStyle,
                   ),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -85,7 +90,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                       const SizedBox(width: 10),
                       Text(
                         appSettings.fontSize.toString(),
-                        style: uiTextStyle,
+                        style: mediumTextStyle,
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -101,11 +106,12 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                       ),
                     ],
                   ),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 2, height: 30),
                   const Text(
                     'Colors:',
                     style: uiTextStyle,
                   ),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
                       showDialog(
@@ -135,7 +141,10 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                         ),
                       );
                     },
-                    child: const Text('Change background color'),
+                    child: const Text(
+                      'Change background color',
+                      style: mediumTextStyle,
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -166,7 +175,10 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                         ),
                       );
                     },
-                    child: const Text('Change default text color'),
+                    child: const Text(
+                      'Change default text color',
+                      style: mediumTextStyle,
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -199,10 +211,14 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                         ),
                       );
                     },
-                    child: const Text('Change highlight text color'),
+                    child: const Text(
+                      'Change highlight text color',
+                      style: mediumTextStyle,
+                    ),
                   ),
-                  const Divider(thickness: 2),
+                  const Divider(thickness: 2, height: 30),
                   const Text('Preview:', style: uiTextStyle),
+                  const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.all(10),
                     color: appSettings.backgroundColor,

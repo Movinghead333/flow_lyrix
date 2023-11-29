@@ -1,15 +1,20 @@
 import 'dart:async';
 
+import 'package:flow_lyrix/constants.dart';
 import 'package:flow_lyrix/models/app_settings.dart';
 import 'package:flow_lyrix/providers/app_settings_provider.dart';
-import 'package:flow_lyrix/widgets/christian_lyrics_widgets.dart';
-import 'package:flow_lyrix/screens/app_settings_screen.dart';
 import 'package:flow_lyrix/providers/song_provider.dart';
+import 'package:flow_lyrix/widgets/player_state_interaction_button.dart';
+import 'package:flow_lyrix/widgets/volume_control_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+
+import '../models/position_data.dart';
+import '../widgets/seek_bar.dart';
+import '../widgets/settings_button.dart';
 
 class ShowLyricsScreen extends StatefulWidget {
   const ShowLyricsScreen({Key? key}) : super(key: key);
@@ -25,8 +30,9 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
   late AppSettingsProvider _appSettingsProvider;
 
   StreamSubscription<String>? intentSubscription;
-  String text = 'Initial text';
   List<String> lines = [];
+
+  Color appBarColor = Colors.grey.shade800;
 
   @override
   void initState() {
@@ -80,15 +86,12 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: appBarColor,
         title: const Text('Flow Lyrix'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
-            onPressed: () {
-              Navigator.pushNamed(context, AppSettingsScreen.routeName);
-            },
-          )
+        actions: const <Widget>[
+          SettingsButton(),
+          VolumeControlButton(),
+          PlayerStateInteractionButton(),
         ],
       ),
       body: StreamBuilder<AppSettings>(
@@ -111,10 +114,50 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
             return StreamBuilder<String?>(
                 stream: _songProvider.lyricsStream,
                 builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return const Center(
+                      child: Text(
+                        'No mp3 loaded yet.',
+                        style: uiTextStyle,
+                      ),
+                    );
+                  }
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // Display seek bar. Using StreamBuilder, this widget rebuilds
+                      // each time the position, buffered position or duration changes.
+                      StreamBuilder<PositionData>(
+                        stream: _songProvider.positionDataStream,
+                        builder: (context, snapshot) {
+                          final positionData = snapshot.data;
+
+                          if (positionData != null) {
+                            _songProvider.christianLyrics.setPositionWithOffset(
+                                position: positionData.position.inMilliseconds,
+                                duration: positionData.duration.inMilliseconds);
+                          }
+
+                          return SeekBar(
+                            duration: positionData?.duration ?? Duration.zero,
+                            position: positionData?.position ?? Duration.zero,
+                            bufferedPosition:
+                                positionData?.bufferedPosition ?? Duration.zero,
+                            onChangeEnd: (Duration d) {
+                              _songProvider.christianLyrics.resetLyric();
+                              _songProvider.christianLyrics
+                                  .setPositionWithOffset(
+                                      position: d.inMilliseconds,
+                                      duration: positionData!
+                                          .duration.inMilliseconds);
+                              _songProvider.player.seek(d);
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 5),
                       Expanded(
                         child: Container(
                           color: appSettings.backgroundColor,
@@ -135,43 +178,6 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                           ),
                         ),
                       ),
-
-                      // Display play/pause button and volume/speed sliders.
-                      ControlButtons(
-                          _songProvider.player, _songProvider.christianLyrics),
-                      // Display seek bar. Using StreamBuilder, this widget rebuilds
-                      // each time the position, buffered position or duration changes.
-                      StreamBuilder<PositionData>(
-                          stream: _songProvider.positionDataStream,
-                          builder: (context, snapshot) {
-                            final positionData = snapshot.data;
-
-                            if (positionData != null) {
-                              _songProvider.christianLyrics
-                                  .setPositionWithOffset(
-                                      position:
-                                          positionData.position.inMilliseconds,
-                                      duration:
-                                          positionData.duration.inMilliseconds);
-                            }
-
-                            return SeekBar(
-                              duration: positionData?.duration ?? Duration.zero,
-                              position: positionData?.position ?? Duration.zero,
-                              bufferedPosition:
-                                  positionData?.bufferedPosition ??
-                                      Duration.zero,
-                              onChangeEnd: (Duration d) {
-                                _songProvider.christianLyrics.resetLyric();
-                                _songProvider.christianLyrics
-                                    .setPositionWithOffset(
-                                        position: d.inMilliseconds,
-                                        duration: positionData!
-                                            .duration.inMilliseconds);
-                                _songProvider.player.seek(d);
-                              },
-                            );
-                          }),
                     ],
                   );
                 });

@@ -1,3 +1,12 @@
+## 0.9.0
+
+- Factored out widgets into separate files.
+- Added theme to the app and started customizing the colors via theme.
+- Moved the control buttons into the app bar.
+- Moved the timeline slider to the top.
+- Added default text when no song has been loaded yet.
+- Removed speed control button from control buttons.
+
 ## 0.8.0
 
 - Split text color into default and hightlight text color, which can be edited in the app settings.
