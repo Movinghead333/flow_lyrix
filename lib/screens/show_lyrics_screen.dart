@@ -167,13 +167,15 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                               final playerState = snapshot.data;
                               final playing = playerState?.playing ?? false;
                               return _songProvider.christianLyrics.getLyric(
-                                  context,
-                                  isPlaying: playing,
-                                  textHighlightColor:
-                                      appSettings.textHighlightColor,
-                                  textDefaultColor:
-                                      appSettings.textDefaultColor,
-                                  fontSize: appSettings.fontSize);
+                                context,
+                                isPlaying: playing,
+                                textHighlightColor:
+                                    appSettings.textHighlightColor,
+                                textDefaultColor: appSettings.textDefaultColor,
+                                fontSize: appSettings.fontSize,
+                                animateLyricLines:
+                                    appSettings.animateLyricsLines,
+                              );
                             },
                           ),
                         ),

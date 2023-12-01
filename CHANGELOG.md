@@ -1,3 +1,8 @@
+## 0.10.0
+
+- Added switch to turn of lyrics line animation in the settings screen.
+- Made settings screen a SingleChildScrollView so large fonts will not cause the screen to overflow and thus cause an error.
+
 ## 0.9.0
 
 - Factored out widgets into separate files.

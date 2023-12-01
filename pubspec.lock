@@ -61,11 +61,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: af5c80f4069d6d7c040249979876e4d55beee96b
-      resolved-ref: af5c80f4069d6d7c040249979876e4d55beee96b
+      ref: "35ed17a888b5f2b442e829a9d1921be917cd27f9"
+      resolved-ref: "35ed17a888b5f2b442e829a9d1921be917cd27f9"
       url: "https://github.com/Movinghead333/christian_lyrics.git"
     source: git
-    version: "0.3.0"
+    version: "0.4.0"
   clock:
     dependency: transitive
     description:
