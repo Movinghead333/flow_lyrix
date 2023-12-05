@@ -427,8 +427,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "20fdd555dbce83241f4bb0c81049ac93db79f49e"
-      resolved-ref: "20fdd555dbce83241f4bb0c81049ac93db79f49e"
+      ref: "4b5d94b099a88f96661ab793b01222cad4805268"
+      resolved-ref: "4b5d94b099a88f96661ab793b01222cad4805268"
       url: "https://github.com/Movinghead333/sylt_parser.git"
     source: git
     version: "0.1.1"

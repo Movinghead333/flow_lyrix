@@ -29,22 +29,23 @@ class SongProvider {
       try {
         await _loadSongIntoPlayer(mp3Filepath!);
 
-        toFile(newMp3Filepath).then((file) {
-          List<int> mp3Bytes = file.readAsBytesSync();
-          debugPrint('length: ${mp3Bytes.length}');
+        File file = await toFile(newMp3Filepath);
+        List<int> mp3Bytes = file.readAsBytesSync();
+        debugPrint('length: ${mp3Bytes.length}');
 
-          SyltLyricsData syltLyricsData =
-              SyltLyricsFromMp3Parser.parseMp3BytesToSyltLyricsData(mp3Bytes);
+        SyltLyricsData syltLyricsData =
+            SyltLyricsFromMp3Parser.parseMp3BytesToSyltLyricsData(mp3Bytes);
 
-          String newLyrics = syltLyricsData.toSrt();
+        String newLyrics = syltLyricsData.toSrt();
 
-          // TODO: check for nullsafety
-          christianLyrics.setLyricContent(newLyrics);
+        christianLyrics.setLyricContent(newLyrics);
 
-          lyrics = newLyrics;
+        lyrics = newLyrics;
 
-          player.play();
-        });
+        player.play();
+      } on NoSyltFrameFoundException catch (_) {
+        List<String> pathStrings = mp3Filepath!.split('/');
+        _lyricsSubject.addError('Could not parse file ${pathStrings.last}');
       } on UnsupportedError catch (e) {
         debugPrint(e.message);
       } on IOException catch (e) {

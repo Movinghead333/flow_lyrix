@@ -1,3 +1,7 @@
+## 0.11.0
+
+- Added error handling in case a mp3 file is opened which does not contain SYLT lyrics data.
+
 ## 0.10.0
 
 - Added switch to turn of lyrics line animation in the settings screen.

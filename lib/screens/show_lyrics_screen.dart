@@ -114,11 +114,27 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
             return StreamBuilder<String?>(
                 stream: _songProvider.lyricsStream,
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    String errorMessage = snapshot.error as String;
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Center(
+                        child: Text(
+                          errorMessage,
+                          style: uiTextStyle,
+                        ),
+                      ),
+                    );
+                  }
+
                   if (snapshot.data == null) {
-                    return const Center(
-                      child: Text(
-                        'No mp3 loaded yet.',
-                        style: uiTextStyle,
+                    return const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Center(
+                        child: Text(
+                          'No mp3 loaded yet.',
+                          style: uiTextStyle,
+                        ),
                       ),
                     );
                   }

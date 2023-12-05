@@ -25,7 +25,7 @@ dependencies:
   sylt_parser:
     git:
       url: https://github.com/Movinghead333/sylt_parser.git
-      ref: 20fdd555dbce83241f4bb0c81049ac93db79f49e
+      ref: 4b5d94b099a88f96661ab793b01222cad4805268
   # sylt_parser:
   #   path: C:/Dev/dart_projects/sylt_parser
 
