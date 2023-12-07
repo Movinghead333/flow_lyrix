@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:flow_lyrix/constants.dart';
 import 'package:flow_lyrix/models/app_settings.dart';
+import 'package:flow_lyrix/models/song_info.dart';
 import 'package:flow_lyrix/providers/app_settings_provider.dart';
 import 'package:flow_lyrix/providers/song_provider.dart';
+import 'package:flow_lyrix/theme.dart';
 import 'package:flow_lyrix/widgets/player_state_interaction_button.dart';
 import 'package:flow_lyrix/widgets/volume_control_button.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,25 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: const Text('Flow Lyrix'),
+        title: StreamBuilder(
+          stream: _songProvider.songInfoStream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            SongInfo songInfo = _songProvider.songInfo;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(songInfo.albumName, style: appBarSmallTextStyle),
+                Text(songInfo.songName, style: appBarSmallTextStyle),
+              ],
+            );
+          },
+        ),
         actions: const <Widget>[
           SettingsButton(),
           VolumeControlButton(),
@@ -121,7 +140,7 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                       child: Center(
                         child: Text(
                           errorMessage,
-                          style: uiTextStyle,
+                          style: largeTextStyle,
                         ),
                       ),
                     );
@@ -133,7 +152,7 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                       child: Center(
                         child: Text(
                           'No mp3 loaded yet.',
-                          style: uiTextStyle,
+                          style: largeTextStyle,
                         ),
                       ),
                     );

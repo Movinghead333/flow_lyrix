@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
+import '../theme.dart';
 
 class AppSettingsScreen extends StatefulWidget {
   const AppSettingsScreen({Key? key}) : super(key: key);
@@ -239,7 +239,10 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.all(10),
-                      color: appSettings.backgroundColor,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: appSettings.backgroundColor,
+                      ),
                       child: Column(
                         children: [
                           Text(
@@ -255,6 +258,20 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                                 fontSize: appSettings.fontSize),
                           ),
                         ],
+                      ),
+                    ),
+                    const Divider(thickness: 2, height: 30),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey[800],
+                      ),
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsetsDirectional.all(5),
+                      child: const Text(
+                        'An app created by Sven Müller',
+                        textAlign: TextAlign.center,
+                        style: creditsTextStyle,
                       ),
                     ),
                   ],

@@ -1,3 +1,8 @@
+## 0.12.0
+
+- Added album name and song name to the appbar and replaced the 'Flow Lyrix' text
+- Added small author credit to settings screen.
+
 ## 0.11.0
 
 - Added error handling in case a mp3 file is opened which does not contain SYLT lyrics data.

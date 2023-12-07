@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:christian_lyrics/christian_lyrics.dart';
+import 'package:flow_lyrix/models/song_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sylt_parser/sylt_parser.dart';
@@ -30,6 +32,14 @@ class SongProvider {
         await _loadSongIntoPlayer(mp3Filepath!);
 
         File file = await toFile(newMp3Filepath);
+
+        Metadata metadata = await MetadataRetriever.fromFile(file);
+        SongInfo newSongInfo = SongInfo(
+            albumName: metadata.albumName ?? 'No album name found',
+            songName: metadata.trackName ?? ' No song name found');
+        songInfo = newSongInfo;
+        print('Album: ${metadata.albumName}, Title: ${metadata.trackName}');
+
         List<int> mp3Bytes = file.readAsBytesSync();
         debugPrint('length: ${mp3Bytes.length}');
 
@@ -66,6 +76,18 @@ class SongProvider {
   String? get mp3Filepath => _mp3FilepathSubject.valueOrNull;
 
   Stream<String?> get mp3FilepathStream => _mp3FilepathSubject.stream;
+
+  final BehaviorSubject<SongInfo> _songInfoSubject =
+      BehaviorSubject<SongInfo>.seeded(
+          SongInfo(albumName: '-- Album name --', songName: '-- Song name --'));
+
+  set songInfo(SongInfo newSongInfo) {
+    _songInfoSubject.add(newSongInfo);
+  }
+
+  SongInfo get songInfo => _songInfoSubject.value;
+
+  Stream<SongInfo> get songInfoStream => _songInfoSubject.stream;
 
   final BehaviorSubject<String?> _lyricsSubject = BehaviorSubject<String?>();
 
