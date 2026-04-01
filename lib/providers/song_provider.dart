@@ -9,7 +9,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sylt_parser/sylt_parser.dart';
-import 'package:uri_to_file/uri_to_file.dart';
+import 'package:uri_to_file_new/uri_to_file_new.dart';
 
 import '../models/position_data.dart';
 

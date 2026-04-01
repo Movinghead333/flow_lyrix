@@ -30,7 +30,7 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
   late SongProvider _songProvider;
   late AppSettingsProvider _appSettingsProvider;
 
-  StreamSubscription<String>? intentSubscription;
+  StreamSubscription<List<SharedMediaFile>>? intentSubscription;
   List<String> lines = [];
 
   Color appBarColor = Colors.grey.shade800;
@@ -55,14 +55,17 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
     _appSettingsProvider = Provider.of<AppSettingsProvider>(context);
 
     // Set mp3Filepath when the app is launch from closed state via an intent
-    ReceiveSharingIntent.getInitialText().then((String? filepath) {
-      _songProvider.mp3Filepath = filepath;
+    ReceiveSharingIntent.instance
+        .getInitialMedia()
+        .then((List<SharedMediaFile> files) {
+      _songProvider.mp3Filepath = files.isNotEmpty ? files.first.path : null;
     });
 
     // Set mp3Filepath when the app is launch from opened state via an intent
-    intentSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String filepath) {
-      _songProvider.mp3Filepath = filepath;
+    intentSubscription = ReceiveSharingIntent.instance
+        .getMediaStream()
+        .listen((List<SharedMediaFile> files) {
+      _songProvider.mp3Filepath = files.isNotEmpty ? files.first.path : null;
     });
   }
 
