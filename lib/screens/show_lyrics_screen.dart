@@ -5,6 +5,7 @@ import 'package:flow_lyrix/models/song_info.dart';
 import 'package:flow_lyrix/providers/app_settings_provider.dart';
 import 'package:flow_lyrix/providers/song_provider.dart';
 import 'package:flow_lyrix/theme.dart';
+import 'package:flow_lyrix/widgets/app_settings_stream_builder.dart';
 import 'package:flow_lyrix/widgets/player_state_interaction_button.dart';
 import 'package:flow_lyrix/widgets/volume_control_button.dart';
 import 'package:flutter/material.dart';
@@ -89,139 +90,205 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: appBarColor,
-        title: StreamBuilder(
-          stream: _songProvider.songInfoStream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            SongInfo songInfo = _songProvider.songInfo;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(songInfo.albumName, style: appBarSmallTextStyle),
-                Text(songInfo.songName, style: appBarSmallTextStyle),
-              ],
-            );
-          },
-        ),
-        actions: const <Widget>[
-          SettingsButton(),
-          VolumeControlButton(),
-          PlayerStateInteractionButton(),
-        ],
-      ),
-      body: StreamBuilder<AppSettings>(
-          stream: _appSettingsProvider.appSettingsStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text('Error loading app settings data'),
-              );
-            }
-
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            AppSettings appSettings = _appSettingsProvider.appSettings;
-
-            return StreamBuilder<String?>(
-                stream: _songProvider.lyricsStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    String errorMessage = snapshot.error as String;
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Center(
-                        child: Text(
-                          errorMessage,
-                          style: largeTextStyle,
-                        ),
-                      ),
-                    );
-                  }
-
-                  if (snapshot.data == null) {
-                    return const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Center(
-                        child: Text(
-                          'No mp3 loaded yet.',
-                          style: largeTextStyle,
-                        ),
-                      ),
-                    );
-                  }
-
-                  return Column(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              color: appBarColor,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IntrinsicHeight(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Display seek bar. Using StreamBuilder, this widget rebuilds
-                      // each time the position, buffered position or duration changes.
-                      StreamBuilder<PositionData>(
-                        stream: _songProvider.positionDataStream,
-                        builder: (context, snapshot) {
-                          final positionData = snapshot.data;
-
-                          if (positionData != null) {
-                            _songProvider.christianLyrics.setPositionWithOffset(
-                                position: positionData.position.inMilliseconds,
-                                duration: positionData.duration.inMilliseconds);
-                          }
-
-                          return SeekBar(
-                            duration: positionData?.duration ?? Duration.zero,
-                            position: positionData?.position ?? Duration.zero,
-                            bufferedPosition:
-                                positionData?.bufferedPosition ?? Duration.zero,
-                            onChangeEnd: (Duration d) {
-                              _songProvider.christianLyrics.resetLyric();
-                              _songProvider.christianLyrics
-                                  .setPositionWithOffset(
-                                      position: d.inMilliseconds,
-                                      duration: positionData!
-                                          .duration.inMilliseconds);
-                              _songProvider.player.seek(d);
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 5),
                       Expanded(
-                        child: Container(
-                          color: appSettings.backgroundColor,
-                          child: StreamBuilder<PlayerState>(
-                            stream: _songProvider.player.playerStateStream,
+                        flex: 1,
+                        child: AppSettingsStreamBuilder(
+                            builder: (context, appSettings) {
+                          return StreamBuilder(
+                            stream: _songProvider.songInfoStream,
                             builder: (context, snapshot) {
-                              final playerState = snapshot.data;
-                              final playing = playerState?.playing ?? false;
-                              return _songProvider.christianLyrics.getLyric(
-                                context,
-                                isPlaying: playing,
-                                textHighlightColor:
-                                    appSettings.textHighlightColor,
-                                textDefaultColor: appSettings.textDefaultColor,
-                                fontSize: appSettings.fontSize,
-                                animateLyricLines:
-                                    appSettings.animateLyricsLines,
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              SongInfo songInfo = _songProvider.songInfo;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    songInfo.albumName,
+                                    style: TextStyle(
+                                      fontSize: appSettings.fontSize,
+                                      color: appSettings.textHighlightColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    softWrap: true,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    songInfo.songName,
+                                    style: TextStyle(
+                                      fontSize: appSettings.fontSize,
+                                      color: appSettings.textHighlightColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    softWrap: true,
+                                  ),
+                                ],
                               );
                             },
-                          ),
+                          );
+                        }),
+                      ),
+                      const VerticalDivider(
+                        color: Colors.white,
+                        thickness: 1,
+                        width: 1,
+                        indent: 5,
+                        endIndent: 5,
+                      ),
+                      const SizedBox(
+                        width: 56,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SettingsButton(),
+                            VolumeControlButton(),
+                            PlayerStateInteractionButton(),
+                          ],
                         ),
                       ),
                     ],
-                  );
-                });
-          }),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: StreamBuilder<AppSettings>(
+                  stream: _appSettingsProvider.appSettingsStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Error loading app settings data'),
+                      );
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    AppSettings appSettings = _appSettingsProvider.appSettings;
+
+                    return StreamBuilder<String?>(
+                        stream: _songProvider.lyricsStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            String errorMessage = snapshot.error as String;
+                            return Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                child: Text(
+                                  errorMessage,
+                                  style: largeTextStyle,
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (snapshot.data == null) {
+                            return const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Center(
+                                child: Text(
+                                  'No mp3 loaded yet.',
+                                  style: largeTextStyle,
+                                ),
+                              ),
+                            );
+                          }
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Display seek bar. Using StreamBuilder, this widget rebuilds
+                              // each time the position, buffered position or duration changes.
+                              StreamBuilder<PositionData>(
+                                stream: _songProvider.positionDataStream,
+                                builder: (context, snapshot) {
+                                  final positionData = snapshot.data;
+
+                                  if (positionData != null) {
+                                    _songProvider.christianLyrics
+                                        .setPositionWithOffset(
+                                            position: positionData
+                                                .position.inMilliseconds,
+                                            duration: positionData
+                                                .duration.inMilliseconds);
+                                  }
+
+                                  return SeekBar(
+                                    duration:
+                                        positionData?.duration ?? Duration.zero,
+                                    position:
+                                        positionData?.position ?? Duration.zero,
+                                    bufferedPosition:
+                                        positionData?.bufferedPosition ??
+                                            Duration.zero,
+                                    onChangeEnd: (Duration d) {
+                                      _songProvider.christianLyrics
+                                          .resetLyric();
+                                      _songProvider.christianLyrics
+                                          .setPositionWithOffset(
+                                              position: d.inMilliseconds,
+                                              duration: positionData!
+                                                  .duration.inMilliseconds);
+                                      _songProvider.player.seek(d);
+                                    },
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 5),
+                              Flexible(
+                                child: Container(
+                                  color: appSettings.backgroundColor,
+                                  child: StreamBuilder<PlayerState>(
+                                    stream:
+                                        _songProvider.player.playerStateStream,
+                                    builder: (context, snapshot) {
+                                      final playerState = snapshot.data;
+                                      final playing =
+                                          playerState?.playing ?? false;
+                                      return _songProvider.christianLyrics
+                                          .getLyric(
+                                        context,
+                                        isPlaying: playing,
+                                        textHighlightColor:
+                                            appSettings.textHighlightColor,
+                                        textDefaultColor:
+                                            appSettings.textDefaultColor,
+                                        fontSize: appSettings.fontSize,
+                                        animateLyricLines:
+                                            appSettings.animateLyricsLines,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        });
+                  }),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

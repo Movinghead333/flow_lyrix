@@ -25,7 +25,6 @@ class PlayerStateInteractionButton extends StatelessWidget {
         if (processingState == ProcessingState.loading ||
             processingState == ProcessingState.buffering) {
           return Container(
-            margin: const EdgeInsets.all(8.0),
             width: iconSize,
             height: iconSize,
             child: const CircularProgressIndicator(),

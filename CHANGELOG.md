@@ -1,3 +1,10 @@
+## 0.13.1
+- Fixed layout related crash on opening a file with the app
+
+## 0.13.0
+- Swapped built-in AppBar widget for custom appbar-like widget to accomodate larger texts and handle text-softwrap
+- Partially updated dependencies to get the app compiling and running again in April 2026
+
 ## 0.12.0
 
 - Added album name and song name to the appbar and replaced the 'Flow Lyrix' text

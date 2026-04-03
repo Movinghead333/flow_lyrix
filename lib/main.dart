@@ -32,6 +32,7 @@ class _MainAppState extends State<MainApp> {
         darkTheme: darkTheme,
         initialRoute: ShowLyricsScreen.routeName,
         routes: {
+          "/": (context) => const ShowLyricsScreen(),
           ShowLyricsScreen.routeName: (context) => const ShowLyricsScreen(),
           AppSettingsScreen.routeName: (context) => const AppSettingsScreen(),
         },
