@@ -9,7 +9,6 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sylt_parser/sylt_parser.dart';
-import 'package:uri_to_file_new/uri_to_file_new.dart';
 
 import '../models/position_data.dart';
 
@@ -30,8 +29,9 @@ class SongProvider {
 
       try {
         await _loadSongIntoPlayer(mp3Filepath!);
-
-        File file = await toFile(newMp3Filepath);
+        print('Loaded song into player: $mp3Filepath');
+        File file = File(newMp3Filepath);
+        print('Got file from filepath: ${file.path}');
 
         Metadata metadata = await MetadataRetriever.fromFile(file);
         SongInfo newSongInfo = SongInfo(

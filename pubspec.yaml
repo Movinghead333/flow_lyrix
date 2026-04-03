@@ -30,10 +30,6 @@ dependencies:
   # sylt_parser:
   #   path: C:/Dev/dart_projects/sylt_parser
 
-  uri_to_file_new:
-    # ^1.0.1
-    path: C:/dev/flutter_projects/third_party_repos/uri_to_file_new
-
   # Use for provider based app-state management
   provider: ^6.0.5
 
