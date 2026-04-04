@@ -114,6 +114,17 @@ class SongProvider {
   Future<Duration?> _loadSongIntoPlayer(String mp3Filepath) async {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.speech());
-    return player.setAudioSource(AudioSource.uri(Uri.parse(mp3Filepath)));
+    try {
+      if (player.audioSource == null) {
+        await player.stop();
+        var uri = Uri.parse(mp3Filepath);
+        var audioSource = AudioSource.uri(uri);
+        print('Audio source: $audioSource, ${audioSource.uri}');
+        await player.setAudioSource(audioSource, preload: true);
+      }
+    } on Exception catch (e) {
+      debugPrint("Error loading audio source: $e");
+    }
+    return null;
   }
 }
