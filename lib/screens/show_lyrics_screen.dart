@@ -213,9 +213,9 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                           }
 
                           return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.max,
                             children: [
                               // Display seek bar. Using StreamBuilder, this widget rebuilds
                               // each time the position, buffered position or duration changes.
@@ -255,7 +255,7 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
                                 },
                               ),
                               const SizedBox(height: 5),
-                              Flexible(
+                              Expanded(
                                 child: Container(
                                   color: appSettings.backgroundColor,
                                   child: StreamBuilder<PlayerState>(
