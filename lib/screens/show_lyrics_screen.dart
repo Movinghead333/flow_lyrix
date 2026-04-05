@@ -97,72 +97,72 @@ class _ShowLyricsScreenState extends State<ShowLyricsScreen>
               color: appBarColor,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: AppSettingsStreamBuilder(
-                            builder: (context, appSettings) {
-                          return StreamBuilder(
-                            stream: _songProvider.songInfoStream,
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              SongInfo songInfo = _songProvider.songInfo;
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    songInfo.albumName,
-                                    style: TextStyle(
-                                      fontSize: appSettings.fontSize,
-                                      color: appSettings.textHighlightColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    softWrap: true,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    songInfo.songName,
-                                    style: TextStyle(
-                                      fontSize: appSettings.fontSize,
-                                      color: appSettings.textHighlightColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    softWrap: true,
-                                  ),
-                                ],
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: AppSettingsStreamBuilder(
+                          builder: (context, appSettings) {
+                        return StreamBuilder(
+                          stream: _songProvider.songInfoStream,
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
-                            },
-                          );
-                        }),
-                      ),
-                      const VerticalDivider(
-                        color: Colors.white,
-                        thickness: 1,
-                        width: 1,
-                        indent: 5,
-                        endIndent: 5,
-                      ),
-                      const SizedBox(
-                        width: 56,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SettingsButton(),
-                            VolumeControlButton(),
-                            PlayerStateInteractionButton(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                            }
+
+                            SongInfo songInfo = _songProvider.songInfo;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  songInfo.albumName,
+                                  style: TextStyle(
+                                    fontSize: appSettings.fontSize,
+                                    color: appSettings.textHighlightColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  softWrap: true,
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  songInfo.songName,
+                                  style: TextStyle(
+                                    fontSize: appSettings.fontSize,
+                                    color: appSettings.textHighlightColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  softWrap: true,
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                    const VerticalDivider(
+                      color: Colors.white,
+                      thickness: 1,
+                      width: 1,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    Flex(
+                      direction: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? Axis.vertical
+                          : Axis.horizontal,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        SettingsButton(),
+                        VolumeControlButton(),
+                        PlayerStateInteractionButton(),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
