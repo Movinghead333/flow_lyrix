@@ -1,3 +1,6 @@
+## 0.13.2
+- Fixed bug in the rotating icons in the new appbar caused by missing refreshes in the christian_lyrics fork
+
 ## 0.13.1
 - Fixed layout related crash on opening a file with the app
 
